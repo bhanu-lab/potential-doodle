@@ -19,7 +19,7 @@ func GetClient(config *oauth2.Config) *http.Client {
 	// The file token.json stores the user's access and refresh tokens, and is
 	// created automatically when the authorization flow completes for the first
 	// time.
-	tokFile := "token.json"
+	tokFile := "/home/bhanureddy/go/src/potential-doodle/token.json"
 	tok, err := TokenFromFile(tokFile)
 	if err != nil {
 		tok = GetTokenFromWeb(config)
@@ -71,7 +71,7 @@ func SaveToken(path string, token *oauth2.Token) {
 
 //GetConfig returns oauth config
 func GetConfig() (*oauth2.Config, error) {
-	b, err := ioutil.ReadFile("credentials.json")
+	b, err := ioutil.ReadFile("/home/bhanureddy/go/src/potential-doodle/credentials.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
@@ -88,10 +88,15 @@ func GetConfig() (*oauth2.Config, error) {
 //GetCalendarService return calendar serrvice from config
 func GetCalendarService() (*calendar.Service, error) {
 	cfg, err := GetConfig()
-	if err == nil {
+	if err != nil {
+		log.Fatal("error while getting config")
 		return nil, err
 	}
 	client := GetClient(cfg)
 	srv, err := calendar.New(client)
+	if err != nil {
+		log.Fatal("error while getting new client")
+		return nil, err
+	}
 	return srv, nil
 }
