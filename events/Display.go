@@ -17,7 +17,7 @@ import (
 func DisplayEvents() {
 	t := time.Now().Format(time.RFC3339)
 	srv, err := utilities.GetCalendarService()
-	if err != nil {
+	if err != nil || srv == nil {
 		log.Fatal("error while getting calendar service")
 		return
 	}

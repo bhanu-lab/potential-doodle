@@ -40,12 +40,11 @@ func CreateEvent(summary string, description string, start *calendar.EventDateTi
 	}
 
 	calendarID := "primary"
-	cfg, err := utilities.GetConfig()
-	if err == nil {
+	srv, err := utilities.GetCalendarService()
+	if err != nil {
+		log.Fatal("error whille getting calendar service")
 		return err
 	}
-	client := utilities.GetClient(cfg)
-	srv, err := calendar.New(client)
 	event, err = srv.Events.Insert(calendarID, event).Do()
 	if err != nil {
 		log.Fatalf("Unable to create event. %+v\n", err)
